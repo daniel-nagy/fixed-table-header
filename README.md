@@ -4,9 +4,6 @@ This module will allow you to scroll a table vertically while the header remains
 
 * [License](#license)
 * [Demo](#demo)
-<!--
-* [Installation](#installation)
--->
 * [Usage](#usage)
 * [How It Works](#how-it-works)
 * [Restrictions](#restrictions)
@@ -17,7 +14,7 @@ This software is provided free of change and without restriction under the [MIT 
 
 ## Demo
 
-[Codepen]()
+[Codepen](http://codepen.io/anon/pen/eJgWGa?editors=101)
 
 <!--
 ## Installation
@@ -89,7 +86,7 @@ angular.module('myApp', [require('angular-material-data-table')]);
 </div>
 ```
 
-When the table is scrolled the `hover` class will be added to the `thead` element.
+The `clone` class will be added to the fixed table header. When the table is scrolled the `hover` class will be added to the `thead` element.
 
 ## How it works
 
@@ -102,7 +99,49 @@ The `fix-head` directive will clone the original `thead` element during the link
 * You'll want to set a background color on the header so it is not completely see through, use a slightly transparent background color for a neat effect.
 * You can only have one `thead` element. Your `thead` element may have multiple rows.
 
-### Why Not?
+In some cases the table header may appear glitchy while scrolling, I haven't been able to find a solution for this. You can put a transition on the padding top to make it look more rubber-band like and less glitchy.
+
+```css
+thead.clone {
+  transition: padding-top 0.2s ease-out;
+}
+```
+
+#### Using With Data Table
+
+If you are using my data table module the progress indicator will be hidden behind the table header. You can use the following CSS to make it visible beneath the header but it will still scroll with the rest of the table and become hidden.
+
+```css
+thead.md-table-progress md-progress-linear {
+  top: 0 !important;
+}
+```
+
+Use the following CSS for a shadow effect
+
+```css
+thead.clone {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+thead.clone.hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+```
+
+Use the following CSS for just borders.
+
+```css
+thead.clone tr:last-child th {
+  border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
+}
+
+thead.clone ~ tbody tr:first-child td {
+  border-top: none;
+}
+```
+
+#### Why Not?
 
 > Why not just position of the original header instead of creating a clone?
 
