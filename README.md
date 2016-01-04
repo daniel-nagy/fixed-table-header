@@ -92,11 +92,11 @@ A clone of the original `<thead>` element will be moved outside the scroll conta
 
 ## How It Works
 
-1. Create a new `<table>` element and copy the attributes from the original `<table>` element then compile it;
+1. Create a new `<table>` element and copy the attributes from the original `<table>` element then compile it.
 2. Clone the original `<thead>` element and append it to the original `<table>` element and compile it.
 3. Detach the cloned `<thead>` element and append it to the new `<table>` element and insert it before the scroll container.
 4. For each `<th>` in the cloned `<thead>`, set its width equal to the width of the original `<th>` in the original `<thead>`.
-5. On the original `<table>` element, set the top margin equal to negative of the height of the original `<thead>` element.
+5. Set the top margin of the original `<table>` element equal to negative the height of the original `<thead>` element.
 6. When the scroll container is scrolled horizontally, use css transforms to translate the cloned `<thead>` element.
 
 The advantage of this solution is the functionality of HTML tables is preserved.
@@ -115,7 +115,7 @@ Use the following CSS to correct the borders.
 
 ```css
 table.clone thead tr:last-child th {
-  border-bottom: 1px rgba(0, 0, 0, 12%) solid;
+  border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
 }
 
 table.clone + md-table-container table tbody tr:first-child td {
@@ -127,7 +127,7 @@ table.clone + md-table-container table tbody tr:first-child td {
 
 > Why not reposition the original header instead of making a clone?
 
-I'm taking advantage of the browsers ability to calculate the width of the columns for me. Otherwise the developer would have to manually set the width of each column like many other solutions.
+I'm taking advantage of the browsers ability to calculate the width of the columns. Otherwise the developer would have to manually set the width of each column like many other solutions.
 
 > Why not use a pure CSS solution?
 
