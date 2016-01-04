@@ -59,10 +59,14 @@ angular.module('myApp', [require('angular-material-data-table')]);
 
 ## Usage
 
+Wrap the table in a element that will scroll vertically. Use the `fix-head` attribute on a `<thead>` element to prevent it from scrolling with the rest of the table.
+
+A clone of the original `<thead>` element will be moved outside the scroll container. To ensure valid HTML, the cloned `<thead>` element will be wrapped in a copy of the `<table>` element. The new `<table>` element will be given the `clone` class.
+
 ```html
-<div> <!-- grandparent element, this is the element that controls the height of the table -->
+<div style="overflow: auto; max-height: 300px;">
   <table>
-    <thead fix-head> <!-- the fix-head attribute will fix the table header -->
+    <thead fix-head>
       <tr>
         <th>Name</th>
         <th>City</th>
@@ -86,71 +90,45 @@ angular.module('myApp', [require('angular-material-data-table')]);
 </div>
 ```
 
-The `clone` class will be added to the fixed table header. When the table is scrolled the `hover` class will be added to the `thead` element.
+## How It Works
 
-## How it works
+1. Create a new `<table>` element and copy the attributes from the original `<table>` element then compile it;
+2. Clone the original `<thead>` element and append it to the original `<table>` element and compile it.
+3. Detach the cloned `<thead>` element and append it to the new `<table>` element and insert it before the scroll container.
+4. For each `<th>` in the cloned `<thead>`, set its width equal to the width of the original `<th>` in the original `<thead>`.
+5. On the original `<table>` element, set the top margin equal to negative of the height of the original `<thead>` element.
+6. When the scroll container is scrolled horizontally, use css transforms to translate the cloned `<thead>` element.
 
-The `fix-head` directive will clone the original `thead` element during the linking phase. It will then insert the clone after the original header. The visibility of the original header will be set to hidden and the cloned header will be positioned absolute. The grandparent element, the element that controls the height of your table and will force the table to scroll vertically, will be positioned relative. The cloned header will then be compiled with the scope of the original header. A watch listener will be created for each cell in the original header that will return the width of the cell. Whenever the width changes, the width of the corresponding cell in the cloned header will be updated. In addition, a scroll event listener will be placed on the grandparent element. When the grandparent element is scrolled, the top padding of the cloned header will be set to the `scrollTop` value of the grandparent element.
+The advantage of this solution is the functionality of HTML tables is preserved.
 
 ## Restrictions
  
 * Your table must be wrapped in a div that determines the vertical scroll of your table.
 * Because the cloned header is compiled with the scope of the original header, if you have a directive with an isolated scope on the original header then `ngRepeat` will not work within the cloned header.
-* You'll want to set a background color on the header so it is not completely see through, use a slightly transparent background color for a neat effect.
-* You can only have one `thead` element. Your `thead` element may have multiple rows.
+* You can only have one `thead` element; however, your `thead` element may have multiple rows.
 
-In some cases the table header may appear glitchy while scrolling, I haven't been able to find a solution for this. You can put a transition on the padding top to make it look more rubber-band like and less glitchy.
+#### Using With The Data Table Module
 
-```css
-thead.clone {
-  transition: padding-top 0.2s ease-out;
-}
-```
+If you are using this directive with my data table module then be aware that the progress indicator will still scroll with the rest of the table.
 
-#### Using With Data Table
-
-If you are using my data table module the progress indicator will be hidden behind the table header. You can use the following CSS to make it visible beneath the header but it will still scroll with the rest of the table and become hidden.
+Use the following CSS to correct the borders.
 
 ```css
-thead.md-table-progress md-progress-linear {
-  top: 0 !important;
-}
-```
-
-Use the following CSS for a shadow effect
-
-```css
-thead.clone {
-  transition: box-shadow 0.2s ease-in-out;
+table.clone thead tr:last-child th {
+  border-bottom: 1px rgba(0, 0, 0, 12%) solid;
 }
 
-thead.clone.hover {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-```
-
-Use the following CSS for just borders.
-
-```css
-thead.clone tr:last-child th {
-  border-bottom: 1px rgba(0, 0, 0, 0.12) solid;
-}
-
-thead.clone ~ tbody tr:first-child td {
+table.clone + md-table-container table tbody tr:first-child td {
   border-top: none;
 }
 ```
 
 #### Why Not?
 
-> Why not just position of the original header instead of creating a clone?
+> Why not reposition the original header instead of making a clone?
 
-We are taking advantage of the browsers ability to calculate the width of the columns for us. Otherwise there would be a lot of ugly calculations to figure out the width of each column.
+I'm taking advantage of the browsers ability to calculate the width of the columns for me. Otherwise the developer would have to manually set the width of each column like many other solutions.
 
-> Why not use translateY to move the cloned header when the grandparent element is scrolled?
+> Why not use a pure CSS solution?
 
-The unfortunate reality is positioning an element while scrolling will result in a glitchy effect in most browsers. The styles will lag slightly behind the scroll. Setting the top padding doesn't remove the glitch but it does prevent rows from becoming visible behind the table header. It is then possible to use a transition on the top padding to remove the glitch and create a sorta playful effect. This isn't ideal but it is better then the glitchy feel in my opinion.
-
-> Why not move the cloned header outside the grandparent element after compiling it.
-
-The problem with this solution is, if the table overflows horizontally then the cloned header will not scroll horizontally with the rest of the table. It may be possible to use translateX to move the cloned header with the table as it is scrolled horizontally but it would probably look glitchy as well.
+CSS solutions often defeat the purpose of using a table in the first place. In addition, the solutions I've seen remove functionality from the table and require the developer to manually set the width of each column.

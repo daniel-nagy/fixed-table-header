@@ -6,33 +6,54 @@ angular.module('fixed.table.header', []).directive('fixHead', fixHead);
 function fixHead($compile, $window) {
   
   function postLink(scope, element) {
-    var clone = element.clone().removeAttr('fix-head').removeAttr('ng-if');
-    var grandParent = element.parent().parent();
+    var table = {
+      clone: jQLite('<table>'),
+      original: element.parent()
+    };
     
-    clone.addClass('clone').css({
-      'position': 'absolute',
-      'top': 0,
-      'zIndex': 1
-    });
+    var header = {
+      clone: element.clone(),
+      original: element
+    };
     
-    element.css('visibility', 'hidden').after(clone);
+    var scrollContainer = table.original.parent();
     
-    $compile(clone)(scope);
+    // copy all the attributes from the original table
+    copyAttrs(table.clone, table.original);
     
-    grandParent.css('position', 'relative').on('scroll', function () {
-      var top = grandParent.prop('scrollTop');
-      
-      clone.css('paddingTop', top + 'px');
-      
-      if(top === 0) {
-        clone.removeClass('hover');
-      } else if(!clone.hasClass('hover')) {
-        clone.addClass('hover');
-      }
+    // prevent recursive compilation
+    header.clone.removeAttr('fix-head').removeAttr('ng-if');
+    
+    // insert the element so when it is compiled it will link
+    // with the correct scope and controllers
+    header.original.after(header.clone);
+    
+    $compile(table.clone)(scope);
+    $compile(header.clone)(scope);
+    
+    table.clone.css({display: 'block', overflow: 'hidden'}).addClass('clone');
+    header.clone.css('display', 'block');
+    header.original.css('visibility', 'hidden');
+    
+    // detach the cloned header and append it to the cloned table,
+    // insert the cloned table before the scroll container.
+    scrollContainer.parent()[0].insertBefore(table.clone.append(header.clone)[0], scrollContainer[0]);
+    
+    scrollContainer.on('scroll', function () {
+      // use CSS transforms to move the cloned header when the table is scrolled horizontally
+      header.clone.css('transform', 'translate3d(' + -(scrollContainer.prop('scrollLeft')) + 'px, 0, 0)');
     });
     
     function cells() {
-      return clone.find('th').length;
+      return header.clone.find('th').length;
+    }
+    
+    function copyAttrs(dst, src) {
+      var attrs = src.prop('attributes');
+      
+      for(var attr in attrs) {
+        dst.attr(attrs[attr].name, attrs[attr].value);
+      }
     }
     
     function getCells(node) {
@@ -41,21 +62,33 @@ function fixHead($compile, $window) {
       });
     }
     
+    function height() {
+      return header.original.prop('clientHeight');
+    }
+    
     function jQLite(node) {
       return angular.element(node);
     }
     
-    function update() {
-      var cells = getCells(element);
+    function marginTop(height) {
+      table.original.css('marginTop', '-' + height + 'px');
+    }
+    
+    function updateCells() {
+      var cells = {
+        clone: getCells(header.clone),
+        original: getCells(header.original)
+      };
       
-      getCells(clone).forEach(function (copy, index) {
-        if(copy.data('isClone')) {
+      cells.clone.forEach(function (clone, index) {
+        if(clone.data('isClone')) {
           return;
         }
         
-        copy.data('isClone', true);
+        // prevent duplicating watch listeners
+        clone.data('isClone', true);
         
-        var cell = cells[index];
+        var cell = cells.original[index];
         var style = $window.getComputedStyle(cell[0]);
         
         var getWidth = function () {
@@ -63,28 +96,29 @@ function fixHead($compile, $window) {
         };
         
         var setWidth = function () {
-          copy.css('minWidth', style.width);
+          marginTop(height());
+          clone.css('minWidth', style.width);
         };
         
         var listener = scope.$watch(getWidth, setWidth);
         
         $window.addEventListener('resize', setWidth);
         
-        copy.on('$destroy', function () {
+        clone.on('$destroy', function () {
           listener();
           $window.removeEventListener('resize', setWidth);
         });
         
         cell.on('$destroy', function () {
-          copy.remove();
+          clone.remove();
         });
       });
     }
     
-    scope.$watch(cells, update);
+    scope.$watch(cells, updateCells);
     
-    element.on('$destroy', function () {
-      clone.remove();
+    header.original.on('$destroy', function () {
+      header.clone.remove();
     });
   }
   
