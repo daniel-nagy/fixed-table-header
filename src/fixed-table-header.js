@@ -6,17 +6,28 @@ angular.module('fixed.table.header', []).directive('fixHead', fixHead);
 function fixHead($compile, $window) {
   
   function postLink(scope, element) {
+      
+    var thead, scrollContainer;
+      
+      // If the element is the header, we will float it in the table's parent div
+    if (element[0].localName == 'thead') {
+        thead = element;
+        scrollContainer = thead.parent().parent();
+    } else {  // If the element isn't the header, it's the div that contains the table
+        thead = element.find('thead');
+        scrollContainer = element;
+    }
+      
     var table = {
       clone: jQLite('<table>'),
-      original: element.parent()
+      original: thead.parent()
     };
     
     var header = {
-      clone: element.clone(),
-      original: element
+      clone: thead.clone(),
+      original: thead
     };
     
-    var scrollContainer = table.original.parent();
     
     // copy all the attributes from the original table
     copyAttrs(table.clone, table.original);
