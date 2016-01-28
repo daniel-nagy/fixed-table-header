@@ -14,23 +14,23 @@ This software is provided free of charge and without restriction under the [MIT 
 
 ## Demo
 
-[Original Codepen](http://codepen.io/mcnigma/pen/BjxqVw/)
+[Original Codepen](http://codepen.io/enigmatic/pen/BjxqVw/)
 
-[Virtual Repeat Codepen](http://codepen.io/mcnigma/pen/bEMQNj/)
+[Virtual Repeat Codepen](http://codepen.io/enigmatic/pen/bEMQNj/)
 
 
 ## Usage
 
 Wrap the table in a element that will scroll vertically. Use the `fix-head` attribute on a `<thead>` element to prevent it from scrolling with the rest of the table.
 
-If you are using [Virtual Repeat](https://material.angularjs.org/latest/demo/virtualRepeat) or an additional wrapper div, use the `fix-head` attribute within the `md-virtual-repeat` element or wrapper div
+If you are using [Virtual Repeat](https://material.angularjs.org/latest/demo/virtualRepeat) or an additional wrapper div, use the `fix-head` attribute within the `md-virtual-repeat` element or wrapper div.
 
 A clone of the original `<thead>` element will be moved outside the scroll container. To ensure valid HTML, the cloned `<thead>` element will be wrapped in a copy of the `<table>` element. The new `<table>` element will be given the `clone` class.
 
 	```html
-	<div style="overflow: auto; max-height: 300px;">
+	<div style="overflow: auto; max-height: 300px;" fix-head>
 	  <table>
-	    <thead fix-head>
+	    <thead>
 	      <tr>
 	        <th>Name</th>
 	        <th>City</th>
