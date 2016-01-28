@@ -14,81 +14,45 @@ This software is provided free of charge and without restriction under the [MIT 
 
 ## Demo
 
-[Codepen](http://codepen.io/anon/pen/eJgWGa?editors=101)
+[Original Codepen](http://codepen.io/mcnigma/pen/BjxqVw/)
 
-<!--
-## Installation
+[Virtual Repeat Codepen](http://codepen.io/mcnigma/pen/bEMQNj/)
 
-#### Using Bower
-
-This package is installable through the Bower package manager.
-
-```
-bower install angular-material-data-table --save
-```
-
-In your `index.html` file, include the data table module and style sheet.
-
-```html
-<!-- style sheet -!->
-<link href="bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" type="text/css"/>
-<!-- module -!->
-<script type="text/javascript" src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
-```
-
-Include the `md.data.table` module as a dependency in your application.
-
-```javascript
-angular.module('myApp', ['ngMaterial', 'md.data.table']);
-```
-
-#### Using npm and Browserify (or JSPM)
-
-In addition, this package may be installed using npm.
-
-```
-npm install angular-material-data-table --save
-```
-
-You may use Browserify to inject this module into your application.
-
-```javascript
-angular.module('myApp', [require('angular-material-data-table')]);
-```
--->
 
 ## Usage
 
 Wrap the table in a element that will scroll vertically. Use the `fix-head` attribute on a `<thead>` element to prevent it from scrolling with the rest of the table.
 
+If you are using [Virtual Repeat](https://material.angularjs.org/latest/demo/virtualRepeat) or an additional wrapper div, use the `fix-head` attribute within the `md-virtual-repeat` element or wrapper div
+
 A clone of the original `<thead>` element will be moved outside the scroll container. To ensure valid HTML, the cloned `<thead>` element will be wrapped in a copy of the `<table>` element. The new `<table>` element will be given the `clone` class.
 
-```html
-<div style="overflow: auto; max-height: 300px;">
-  <table>
-    <thead fix-head>
-      <tr>
-        <th>Name</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>Email</th>
-        <th>Phone</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="contact in contacts">
-        <td>{{contact.name}}</td>
-        <td>{{contact.city}}</td>
-        <td>{{contact.state}}</td>
-        <td>{{contact.zip}}</td>
-        <td>{{contact.emial}}</td>
-        <td>{{contact.phone}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
+	```html
+	<div style="overflow: auto; max-height: 300px;">
+	  <table>
+	    <thead fix-head>
+	      <tr>
+	        <th>Name</th>
+	        <th>City</th>
+	        <th>State</th>
+	        <th>Zip</th>
+	        <th>Email</th>
+	        <th>Phone</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="contact in contacts">
+	        <td>{{contact.name}}</td>
+	        <td>{{contact.city}}</td>
+	        <td>{{contact.state}}</td>
+	        <td>{{contact.zip}}</td>
+	        <td>{{contact.emial}}</td>
+	        <td>{{contact.phone}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>
+	```
 
 ## How It Works
 

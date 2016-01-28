@@ -7,15 +7,17 @@ function fixHead($compile, $window) {
   
   function postLink(scope, element) {
       
-    var thead, scrollContainer;
+    var thead, container, scroller;
       
       // If the element is the header, we will float it in the table's parent div
     if (element[0].localName == 'thead') {
         thead = element;
-        scrollContainer = thead.parent().parent();
+        container = thead.parent().parent();
+        scroller = container;
     } else {  // If the element isn't the header, it's the div that contains the table
         thead = element.find('thead');
-        scrollContainer = element;
+        container = element;
+        scroller = thead.parent().parent();
     }
       
     var table = {
@@ -48,11 +50,11 @@ function fixHead($compile, $window) {
     
     // detach the cloned header and append it to the cloned table,
     // insert the cloned table before the scroll container.
-    scrollContainer.parent()[0].insertBefore(table.clone.append(header.clone)[0], scrollContainer[0]);
+    container.parent()[0].insertBefore(table.clone.append(header.clone)[0], container[0]);
     
-    scrollContainer.on('scroll', function () {
+    scroller.on('scroll', function () {
       // use CSS transforms to move the cloned header when the table is scrolled horizontally
-      header.clone.css('transform', 'translate3d(' + -(scrollContainer.prop('scrollLeft')) + 'px, 0, 0)');
+      header.clone.css('transform', 'translate3d(' + -(scroller.prop('scrollLeft')) + 'px, 0, 0)');
     });
     
     function cells() {
