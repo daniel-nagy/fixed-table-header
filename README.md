@@ -14,7 +14,7 @@ This software is provided free of charge and without restriction under the [MIT 
 
 ## Demo
 
-[Codepen](http://codepen.io/anon/pen/eJgWGa?editors=101)
+[Codepen](http://codepen.io/anon/pen/qbLaMb?editors=101)
 
 <!--
 ## Installation
