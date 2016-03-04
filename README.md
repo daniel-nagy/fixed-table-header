@@ -40,21 +40,19 @@ Include the `fixed.table.header` module as a dependency in your application.
 angular.module('myApp', ['fixed.table.header']);
 ```
 
-<!--
 #### Using npm and Browserify (or JSPM)
 
 In addition, this package may be installed using npm.
 
 ```
-npm install angular-material-data-table --save
+npm install angular-fixed-table-header --save
 ```
 
 You may use Browserify to inject this module into your application.
 
 ```javascript
-angular.module('myApp', [require('angular-material-data-table')]);
+angular.module('myApp', [require('angular-fixed-table-header')]);
 ```
--->
 
 ## Usage
 
