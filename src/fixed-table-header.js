@@ -2,7 +2,7 @@
  * Angular Fixed Table Header
  * https://github.com/daniel-nagy/fixed-table-header
  * @license MIT
- * v0.2.0
+ * v0.2.1
  */
 (function (window, angular, undefined) {
 'use strict';
@@ -91,7 +91,7 @@ function fixHead($compile, $window) {
           
           var setWidth = function () {
             marginTop(height());
-            clone.css('minWidth', style.width);
+            clone.css({minWidth: style.width, maxWidth: style.width});
           };
           
           var listener = scope.$watch(getWidth, setWidth);

@@ -89,6 +89,12 @@ A clone of the original `<thead>` element will be moved outside the scroll conta
 
 ## Change Log
 
+#### Version 0.2.1
+###### March 15, 2016
+
+* Set the max width of the header cell as well.
+* Fix bower.json `main` property.
+
 #### Version 0.2.0
 ###### March 4, 2016
 
