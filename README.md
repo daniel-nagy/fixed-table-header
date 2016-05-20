@@ -113,7 +113,6 @@ The advantage of this solution is the functionality of HTML tables is preserved.
 
 ## Restrictions
  
-* Your table must be wrapped in a div that determines the vertical scroll of your table (you may use flex box).
 * You may only have one `thead` element; however, your `thead` element may have multiple rows.
 
 #### Using With The Data Table Module

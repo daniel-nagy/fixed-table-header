@@ -1,0 +1,11 @@
+/* This is needed for the $mdSticky hack */
+.sticky-placeholder {
+    display: none!important;
+}
+
+/* When my md-table was inside an md-card or other elements with margin, the sticky clone was given incorrect margins so I reset them to 0. */
+.md-table.md-sticky-clone {
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.16);
+    margin: 0!important;
+}
