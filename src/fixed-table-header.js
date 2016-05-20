@@ -14,7 +14,7 @@
     function link(scope, element, attributes, controllers, transclude) {
       // Hack to hide sticky header after scrolling up when the sticky header is not the first visible element in the scrollable container.
       // See https://github.com/angular/material/issues/8506
-      var stickyPlaceholder = angular.element('<div class="sticky-placeholder" style="display: none;"></div>');
+      var stickyPlaceholder = angular.element('<div class="sticky-placeholder"></div>');
       element.parent().parent()[0].insertBefore(stickyPlaceholder[0], element.parent()[0]);
       $mdSticky(scope, stickyPlaceholder);
 
@@ -77,7 +77,7 @@
 
         var wrapper = element.parent().clone().empty().addClass('sticky-clone');
         wrapper.append(element.clone().empty());
-        wrapper.find('thead').removeAttr('fixed-header');
+        wrapper.find('thead').removeAttr('fix-head');
         $compile(wrapper)(scope);
 
         wrapper.find('thead').append(clone);
