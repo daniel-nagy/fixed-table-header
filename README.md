@@ -4,7 +4,9 @@ This module will allow you to scroll a table vertically while the header remains
 
 * [License](#license)
 * [Demo](#demo)
+* [Installation](#installation)
 * [Usage](#usage)
+* [Change Log](#change-log)
 * [How It Works](#how-it-works)
 * [Restrictions](#restrictions)
 
@@ -14,10 +16,45 @@ This software is provided free of charge and without restriction under the [MIT 
 
 ## Demo
 
-[Original Codepen](http://codepen.io/enigmatic/pen/BjxqVw/)
+[Codepen](http://codepen.io/anon/pen/qbLaMb?editors=101)
 
 [Virtual Repeat Codepen](http://codepen.io/enigmatic/pen/bEMQNj/)
 
+## Installation
+
+#### Using Bower
+
+This package is installable through the Bower package manager.
+
+```
+bower install angular-fixed-table-header --save
+```
+
+In your `index.html` file, include the source file.
+
+```html
+<script type="text/javascript" src="bower_components/angular-fixed-table-header/src/fixed-table-header.min.js"></script>
+```
+
+Include the `fixed.table.header` module as a dependency in your application.
+
+```javascript
+angular.module('myApp', ['fixed.table.header']);
+```
+
+#### Using npm and Browserify (or JSPM)
+
+In addition, this package may be installed using npm.
+
+```
+npm install angular-fixed-table-header --save
+```
+
+You may use Browserify to inject this module into your application.
+
+```javascript
+angular.module('myApp', [require('angular-fixed-table-header')]);
+```
 
 ## Usage
 
@@ -54,11 +91,24 @@ A clone of the original `<thead>` element will be moved outside the scroll conta
 	</div>
 	```
 
+## Change Log
+
+#### Version 0.2.1
+###### March 15, 2016
+
+* Set the max width of the header cell as well.
+* Fix bower.json `main` property.
+
+#### Version 0.2.0
+###### March 4, 2016
+
+* You may now use `ng-repeat` within the table header.
+
 ## How It Works
 
-1. Create a new `<table>` element and copy the attributes from the original `<table>` element then compile it.
+1. Clone the original `<table>` element and empty its contents, then move it outside the scroll container and compile it.
 2. Clone the original `<thead>` element and append it to the original `<table>` element and compile it.
-3. Detach the cloned `<thead>` element and append it to the new `<table>` element and insert it before the scroll container.
+3. Detach the cloned `<thead>` element and append it to the cloned `<table>` element.
 4. For each `<th>` in the cloned `<thead>`, set its width equal to the width of the original `<th>` in the original `<thead>`.
 5. Set the top margin of the original `<table>` element equal to negative the height of the original `<thead>` element.
 6. When the scroll container is scrolled horizontally, use css transforms to translate the cloned `<thead>` element.
@@ -67,9 +117,8 @@ The advantage of this solution is the functionality of HTML tables is preserved.
 
 ## Restrictions
  
-* Your table must be wrapped in a div that determines the vertical scroll of your table.
-* Because the cloned header is compiled with the scope of the original header, if you have a directive with an isolated scope on the original header then `ngRepeat` will not work within the cloned header.
-* You can only have one `thead` element; however, your `thead` element may have multiple rows.
+* Your table must be wrapped in a div that determines the vertical scroll of your table (you may use flex box).
+* You may only have one `thead` element; however, your `thead` element may have multiple rows.
 
 #### Using With The Data Table Module
 
